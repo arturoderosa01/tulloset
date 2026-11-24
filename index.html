@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111318">
+<meta name="author" content="Arturo De Rosa">
+<meta name="copyright" content="2026 Arturo De Rosa">
+<meta name="description" content="SETFLOW - The Intelligent Setlist. Created by Arturo De Rosa.">
+<title>SETFLOW - The Intelligent Setlist</title>
+
+<style>
+:root {
+  --bg: #111318;
+  --panel: #1c2027;
+  --accent: #caff45;
+  --text: #f4f4f4;
+  --muted: #999fa9;
+  --border: #343943;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 25px 5%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.logo-icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 36px;
+}
+.logo-icon span {
+  width: 5px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.logo {
+  color: var(--accent);
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+.tagline {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.author {
+  color: #ffffff;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 8px;
+}
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 30px 20px;
+}
+h1 {
+  font-size: clamp(32px, 6vw, 48px);
+  margin: 10px 0;
+  letter-spacing: -2px;
+}
+h2 {
+  font-size: 20px;
+  margin-top: 0;
+}
+p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 22px 0;
+}
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 14px;
+}
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+input, select {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 15px;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  background: var(--accent);
+  color: #111;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+button:hover {
+  filter: brightness(.9);
+}
+.secondary {
+  background: #303640;
+  color: white;
+}
+.danger {
+  color: #ff8585;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 25px;
+}
+.stat {
+  background: var(--panel);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.stat strong {
+  display: block;
+  color: var(--accent);
+  font-size: 27px;
+  margin-top: 8px;
+}
+.stat small {
+  color: var(--muted);
+}
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+th, td {
+  padding: 13px 8px;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+td {
+  font-size: 14px;
+}
+td button {
+  padding: 7px 10px;
+  margin: 2px;
+}
+.artist {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.energy-bar {
+  height: 6px;
+  width: 65px;
+  background: #343943;
+  border-radius: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.energy-fill {
+  background: var(--accent);
+  height: 100%;
+}
+.section-name {
+  color: var(--accent);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+#chart {
+  width: 100%;
+  height: auto;
+  margin-top: 15px;
+}
+.notice {
+  color: var(--accent);
+  font-size: 13px;
+}
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  border-top: 1px solid var(--border);
+}
+.copyright {
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: .5px;
+  color: #b6b6b6;
+}
+[hidden] {
+  display: none !important;
+}
+
+@media(max-width: 600px) {
+  .panel { padding: 16px; }
+  .stat { padding: 12px; }
+  .stat strong { font-size: 21px; }
+  th, td { padding: 10px 6px; }
+}
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  header, .intro, .stats,
+  #inputPanel, #libraryPanel, #settingsPanel,
+  .no-print, #graphPanel {
+    display: none !important;
+  }
+  main {
+    padding: 0;
+  }
+  .panel {
+    background: white;
+    border: none;
+    padding: 0;
+  }
+  th, td {
+    border-color: #ddd;
+    color: black;
+  }
+  .artist, .section-name {
+    color: #555;
+  }
+  footer, .copyright {
+    color: #555;
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-icon">
+    <span style="height:12px"></span>
+    <span style="height:24px"></span>
+    <span style="height:17px"></span>
+    <span style="height:36px"></span>
+    <span style="height:27px"></span>
+    <span style="height:33px"></span>
+  </div>
+  <div>
+    <div class="logo">SETFLOW</div>
+    <div class="tagline">THE INTELLIGENT SETLIST</div>
+    <div class="author">Created by Arturo De Rosa</div>
+  </div>
+</header>
+
+<main>
+
+<div class="intro">
+  <h1>Build your show.</h1>
+  <p>Il tuo repertorio. La tua energia. La scaletta perfetta.</p>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <small>BRANI</small>
+    <strong id="songCount">0</strong>
+  </div>
+  <div class="stat">
+    <small>DURATA</small>
+    <strong id="totalTime">0 min</strong>
+  </div>
+  <div class="stat">
+    <small>ENERGIA MEDIA</small>
+    <strong id="avgEnergy">0</strong>
+  </div>
+</div>
+
+<section class="panel" id="inputPanel">
+  <h2>01 — Aggiungi un brano</h2>
+
+  <form id="songForm">
+    <div class="fields">
+
+      <div>
+        <label for="title">Titolo del brano</label>
+        <input id="title" placeholder="Titolo" required>
+      </div>
+
+      <div>
+        <label for="artist">Artista</label>
+        <input id="artist" placeholder="Artista">
+      </div>
+
+      <div>
+        <label for="duration">Durata (mm:ss)</label>
+        <input id="duration" value="4:00"
+          pattern="[0-9]{1,3}:[0-5][0-9]" required>
+      </div>
+
+      <div>
+        <label for="bpm">BPM (facoltativo)</label>
+        <input id="bpm" type="number" min="20" max="350"
+          placeholder="120">
+      </div>
+
+      <div>
+        <label for="energy">Energia del brano</label>
+        <select id="energy">
+          <option value="1">1 - Molto intimo</option>
+          <option value="2">2 - Delicato</option>
+          <option value="3">3 - Ballad</option>
+          <option value="4">4 - Rilassato</option>
+          <option value="5">5 - Moderato</option>
+          <option value="6" selected>6 - Dinamico</option>
+          <option value="7">7 - Coinvolgente</option>
+          <option value="8">8 - Potente</option>
+          <option value="9">9 - Travolgente</option>
+          <option value="10">10 - Esplosivo</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button type="submit" id="addButton">
+        + Aggiungi brano
+      </button>
+      <button type="button" class="secondary"
+        onclick="loadDemo()">
+        Carica repertorio demo
+      </button>
+    </div>
+
+  </form>
+</section>
+
+<section class="panel" id="libraryPanel">
+  <h2>02 — Il tuo repertorio</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Brano</th>
+          <th>Durata</th>
+          <th>BPM</th>
+          <th>Energia</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="library"></tbody>
+    </table>
+  </div>
+
+  <p id="emptyLibrary">Non hai ancora inserito brani.</p>
+
+  <div class="actions">
+    <button class="secondary danger"
+      onclick="clearLibrary()">
+      Svuota repertorio
+    </button>
+  </div>
+</section>
+
+<section class="panel" id="settingsPanel">
+  <h2>03 — Configura il concerto</h2>
+
+  <div class="fields">
+    <div>
+      <label for="showName">Nome della scaletta</label>
+      <input id="showName" value="My Live Show">
+    </div>
+
+    <div>
+      <label for="style">Tipologia di spettacolo</label>
+      <select id="style">
+        <option value="live">Live - Crescendo e climax</option>
+        <option value="party">Party - Alta energia</option>
+        <option value="theatre">Teatro - Emozione e dinamica</option>
+        <option value="rock">Rock - Potenza crescente</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button onclick="generateSetlist()">
+      &#10022; Genera scaletta intelligente
+    </button>
+  </div>
+
+  <p id="message" class="notice" role="status"></p>
+</section>
+
+<section class="panel" id="resultPanel" hidden>
+
+  <div class="section-name">SETFLOW / YOUR LIVE SHOW</div>
+
+  <h2 id="resultTitle" style="margin-top:12px"></h2>
+  <p id="resultInfo"></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Brano</th>
+          <th>Durata</th>
+          <th>Energia</th>
+          <th>Fase</th>
+          <th class="no-print">Ordine</th>
+        </tr>
+      </thead>
+      <tbody id="setlist"></tbody>
+    </table>
+  </div>
+
+  <div class="actions no-print">
+    <button onclick="window.print()">Stampa / PDF</button>
+    <button class="secondary" onclick="copySetlist()">
+      Copia scaletta
+    </button>
+  </div>
+
+</section>
+
+<section class="panel" id="graphPanel" hidden>
+  <h2>04 — Energy Flow</h2>
+  <p>La curva energetica del tuo concerto.</p>
+
+  <svg id="chart" viewBox="0 0 700 280"
+    role="img"
+    aria-label="Grafico energia della scaletta">
+  </svg>
+
+  <p style="font-size:12px">
+    Verde: energia dei brani.
+    Linea tratteggiata: andamento ideale.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  SETFLOW 1.0 — DESIGNED FOR LIVE MUSICIANS
+  <div class="copyright">
+    Created by Arturo De Rosa
+    <br><br>
+    &copy; 2026 Arturo De Rosa — All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+
+/*
+  SETFLOW 1.0
+  The Intelligent Setlist
+  Created by Arturo De Rosa
+  Copyright 2026 Arturo De Rosa
+*/
+
+const $ = id => document.getElementById(id);
+
+let songs = [];
+let ordered = [];
+let editingId = null;
+
+const curves = {
+  live:    [7, 8, 5, 6, 7, 9, 8, 3, 5, 7, 9, 10],
+  party:   [8, 9, 7, 8, 9, 9, 7, 6, 8, 9, 9, 10],
+  theatre: [6, 7, 4, 3, 6, 9, 7, 2, 4, 6, 8, 10],
+  rock:    [8, 9, 6, 7, 8, 9, 8, 4, 7, 8, 9, 10]
+};
+
+function uid() {
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2);
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function seconds(duration) {
+  const parts = duration.split(':').map(Number);
+  return parts[0] * 60 + parts[1];
+}
+
+function totalDuration(list) {
+  return list.reduce((sum,s) =>
+    sum + seconds(s.duration), 0);
+}
+
+function formatTime(s) {
+  return Math.floor(s / 60) + ':' +
+    String(s % 60).padStart(2,'0');
+}
+
+function save() {
+  try {
+    localStorage.setItem('setflow-v1', JSON.stringify({
+      songs,
+      ordered: ordered.map(s => s.id),
+      name: $('showName').value,
+      style: $('style').value
+    }));
+  } catch(e) {
+    $('message').textContent =
+      'Salvataggio locale non disponibile.';
+  }
+}
+
+function restore() {
+  try {
+    const data = JSON.parse(
+      localStorage.getItem('setflow-v1') || 'null'
+    );
+
+    if (!data) return;
+
+    songs = data.songs || [];
+
+    ordered = (data.ordered || [])
+      .map(id => songs.find(s => s.id === id))
+      .filter(Boolean);
+
+    $('showName').value = data.name || 'My Live Show';
+    $('style').value = data.style || 'live';
+
+  } catch(e) {}
+}
+
+function energyHTML(value) {
+  return `${value}/10
+    <div class="energy-bar">
+      <div class="energy-fill"
+        style="width:${value * 10}%"></div>
+    </div>`;
+}
+
+function renderLibrary() {
+
+  $('library').innerHTML = songs.map((s,i) => `
+    <tr>
+      <td>
+        <b>${escapeHTML(s.title)}</b>
+        <div class="artist">${escapeHTML(s.artist)}</div>
+      </td>
+
+      <td>${escapeHTML(s.duration)}</td>
+      <td>${s.bpm || '—'}</td>
+      <td>${energyHTML(s.energy)}</td>
+
+      <td>
+        <button class="secondary"
+          onclick="editSong(${i})"
+          aria-label="Modifica brano">
+          &#9998;
+        </button>
+
+        <button class="secondary danger"
+          onclick="deleteSong(${i})"
+          aria-label="Elimina brano">
+          &#10005;
+        </button>
+      </td>
+    </tr>
+  `).join('');
+
+  $('emptyLibrary').hidden = songs.length > 0;
+
+  $('songCount').textContent = songs.length;
+
+  $('totalTime').textContent =
+    Math.round(totalDuration(songs)/60) + ' min';
+
+  $('avgEnergy').textContent = songs.length
+    ? (songs.reduce((a,s)=>a+s.energy,0) /
+      songs.length).toFixed(1)
+    : '0';
+}
+
+$('songForm').addEventListener('submit', e => {
+
+  e.preventDefault();
+
+  const title = $('title').value.trim();
+
+  if (!title) return;
+
+  const song = {
+    id: editingId || uid(),
+    title,
+    artist: $('artist').value.trim(),
+    duration: $('duration').value,
+    bpm: Number($('bpm').value) || null,
+    energy: Number($('energy').value)
+  };
+
+  if (editingId) {
+    songs = songs.map(s =>
+      s.id === editingId ? song : s);
+  } else {
+    songs.push(song);
+  }
+
+  editingId = null;
+  ordered = [];
+
+  $('songForm').reset();
+
+  $('addButton').textContent = '+ Aggiungi brano';
+
+  renderLibrary();
+  renderSetlist();
+  save();
+
+  $('title').focus();
+});
+
+function editSong(i) {
+
+  const s = songs[i];
+
+  editingId = s.id;
+
+  $('title').value = s.title;
+  $('artist').value = s.artist;
+  $('duration').value = s.duration;
+  $('bpm').value = s.bpm || '';
+  $('energy').value = s.energy;
+
+  $('addButton').textContent = 'Salva modifiche';
+
+  $('inputPanel').scrollIntoView({behavior:'smooth'});
+}
+
+function deleteSong(i) {
+
+  if (editingId === songs[i].id) {
+    editingId = null;
+    $('songForm').reset();
+    $('addButton').textContent = '+ Aggiungi brano';
+  }
+
+  songs.splice(i,1);
+  ordered = [];
+
+  renderLibrary();
+  renderSetlist();
+  save();
+}
+
+function clearLibrary() {
+
+  if (!confirm('Vuoi eliminare tutto il repertorio?'))
+    return;
+
+  songs = [];
+  ordered = [];
+  editingId = null;
+
+  $('songForm').reset();
+  $('addButton').textContent = '+ Aggiungi brano';
+
+  renderLibrary();
+  renderSetlist();
+  save();
+}
+
+function loadDemo() {
+
+  if (songs.length && !confirm(
+    'Sostituire il repertorio con quello demo?'
+  )) return;
+
+  const demo = [
+    ['We Will Rock You','Queen','2:02',81,8],
+    ['Wonderwall','Oasis','4:18',87,4],
+    ['Come Together','The Beatles','4:20',83,6],
+    ["Livin’ on a Prayer",'Bon Jovi','4:09',123,9],
+    ['With or Without You','U2','4:56',110,3],
+    ["Sweet Child O’ Mine",'Guns N’ Roses','5:56',125,9],
+    ["Don't Stop Me Now",'Queen','3:29',156,10],
+    ['Seven Nation Army','The White Stripes','3:52',124,7],
+    ['Highway to Hell','AC/DC','3:28',116,9],
+    ['Every Breath You Take','The Police','4:13',117,5],
+    ['Use Somebody','Kings of Leon','3:51',138,7],
+    ['Fix You','Coldplay','4:55',138,4]
+  ];
+
+  songs = demo.map(s => ({
+    id: uid(),
+    title:s[0],
+    artist:s[1],
+    duration:s[2],
+    bpm:s[3],
+    energy:s[4]
+  }));
+
+  ordered = [];
+  editingId = null;
+
+  $('songForm').reset();
+  $('addButton').textContent = '+ Aggiungi brano';
+
+  renderLibrary();
+  renderSetlist();
+  save();
+}
+
+function targetEnergy(i,n) {
+
+  const curve = curves[$('style').value] || curves.live;
+
+  if (n === 1) return 10;
+
+  const x = i / (n-1) * (curve.length-1);
+
+  const a = Math.floor(x);
+  const b = Math.min(a+1,curve.length-1);
+
+  return curve[a] +
+    (curve[b]-curve[a]) * (x-a);
+}
+
+function score(list) {
+
+  let cost = 0;
+
+  list.forEach((s,i) => {
+
+    const target = targetEnergy(i,list.length);
+
+    cost += Math.pow(s.energy-target,2);
+
+    if (i > 0) {
+
+      const prev = list[i-1];
+
+      if (s.energy <= 4 && prev.energy <= 4) {
+        cost += 5;
+      }
+
+      if (s.bpm && prev.bpm) {
+
+        const a = s.bpm;
+        const b = prev.bpm;
+
+        const difference = Math.min(
+          Math.abs(a-b),
+          Math.abs(a-b*2),
+          Math.abs(a*2-b)
+        );
+
+        cost += Math.min(difference/30,3) * .25;
+      }
+    }
+  });
+
+  return cost;
+}
+
+function generateSetlist() {
+
+  if (songs.length < 3) {
+
+    $('message').textContent =
+      'Inserisci almeno 3 brani per generare una scaletta.';
+
+    return;
+  }
+
+  const sorted = [...songs].sort(
+    (a,b) => a.energy-b.energy
+  );
+
+  const finale = sorted.pop();
+
+  const positions = sorted.map((s,i) => ({
+    i,
+    target:targetEnergy(i,songs.length)
+  })).sort((a,b) => a.target-b.target);
+
+  const result = new Array(songs.length);
+
+  positions.forEach((p,i) => {
+    result[p.i] = sorted[i];
+  });
+
+  result[result.length-1] = finale;
+
+  // Ottimizzazione dei passaggi musicali.
+  // Il brano finale rimane bloccato.
+
+  let bestScore = score(result);
+
+  for (let pass=0; pass<5; pass++) {
+
+    let improved = false;
+
+    for (let i=0; i<result.length-2; i++) {
+
+      for (let j=i+1; j<result.length-1; j++) {
+
+        [result[i],result[j]] = [result[j],result[i]];
+
+        const newScore = score(result);
+
+        if (newScore + 0.0001 < bestScore) {
+
+          bestScore = newScore;
+          improved = true;
+
+        } else {
+
+          [result[i],result[j]] = [result[j],result[i]];
+        }
+      }
+    }
+
+    if (!improved) break;
+  }
+
+  ordered = result;
+
+  $('message').textContent =
+    'Scaletta generata con successo!';
+
+  renderSetlist();
+  save();
+
+  $('resultPanel').scrollIntoView({behavior:'smooth'});
+}
+
+function phase(i,n) {
+
+  if (i === n-1) return 'Finale esplosivo';
+
+  if (i === 0) return 'Opening';
+
+  const p = i / Math.max(1,n-1);
+
+  if (p < .20) return 'Warm up';
+  if (p < .40) return 'Crescendo';
+  if (p < .60) return 'Climax centrale';
+  if (p < .70) return 'Respiro';
+
+  return 'Final build';
+}
+
+function renderSetlist() {
+
+  $('resultPanel').hidden = !ordered.length;
+  $('graphPanel').hidden = !ordered.length;
+
+  if (!ordered.length) return;
+
+  $('resultTitle').textContent =
+    $('showName').value || 'My Live Show';
+
+  $('resultInfo').textContent =
+    ordered.length + ' brani • ' +
+    formatTime(totalDuration(ordered)) + ' minuti';
+
+  $('setlist').innerHTML = ordered.map((s,i) => `
+    <tr>
+
+      <td>${String(i+1).padStart(2,'0')}</td>
+
+      <td>
+        <b>${escapeHTML(s.title)}</b>
+        <div class="artist">${escapeHTML(s.artist)}</div>
+      </td>
+
+      <td>${escapeHTML(s.duration)}</td>
+
+      <td>${energyHTML(s.energy)}</td>
+
+      <td>
+        <span class="section-name">
+          ${phase(i,ordered.length)}
+        </span>
+      </td>
+
+      <td class="no-print">
+
+        <button class="secondary"
+          onclick="moveSong(${i},-1)"
+          aria-label="Sposta in alto">
+          &#8593;
+        </button>
+
+        <button class="secondary"
+          onclick="moveSong(${i},1)"
+          aria-label="Sposta in basso">
+          &#8595;
+        </button>
+
+      </td>
+
+    </tr>
+  `).join('');
+
+  drawChart();
+}
+
+function moveSong(i,direction) {
+
+  const j = i+direction;
+
+  if (j<0 || j>=ordered.length) return;
+
+  [ordered[i],ordered[j]] = [ordered[j],ordered[i]];
+
+  renderSetlist();
+  save();
+}
+
+function drawChart() {
+
+  const n = ordered.length;
+
+  const x = i => 45 + i*620/Math.max(1,n-1);
+  const y = v => 245-v*21;
+
+  let html = '';
+
+  for (let v=0; v<=10; v+=2) {
+
+    html += `
+      <line x1="45" y1="${y(v)}"
+        x2="665" y2="${y(v)}"
+        stroke="#343943" stroke-width="1"/>
+
+      <text x="30" y="${y(v)+4}"
+        fill="#999fa9" font-size="11"
+        text-anchor="end">${v}</text>`;
+  }
+
+  const actual = ordered.map(
+    (s,i)=>`${x(i)},${y(s.energy)}`
+  ).join(' ');
+
+  const ideal = ordered.map(
+    (s,i)=>`${x(i)},${y(targetEnergy(i,n))}`
+  ).join(' ');
+
+  html += `
+    <polygon points="45,245 ${actual} 665,245"
+      fill="#caff45" opacity=".08"/>
+
+    <polyline points="${ideal}"
+      fill="none" stroke="#999fa9"
+      stroke-width="2" stroke-dasharray="6 6"/>
+
+    <polyline points="${actual}"
+      fill="none" stroke="#caff45"
+      stroke-width="3"
+      stroke-linejoin="round"/>`;
+
+  ordered.forEach((s,i) => {
+
+    html += `
+      <circle cx="${x(i)}" cy="${y(s.energy)}"
+        r="5" fill="#caff45">
+
+        <title>
+          ${escapeHTML(s.title)}: ${s.energy}/10
+        </title>
+
+      </circle>`;
+  });
+
+  html += `
+    <text x="45" y="268" fill="#999fa9"
+      font-size="11">OPENING</text>
+
+    <text x="355" y="268" fill="#999fa9"
+      font-size="11" text-anchor="middle">CLIMAX</text>
+
+    <text x="665" y="268" fill="#999fa9"
+      font-size="11" text-anchor="end">FINALE</text>`;
+
+  $('chart').innerHTML = html;
+}
+
+async function copySetlist() {
+
+  const text = $('resultTitle').textContent + '\n\n' +
+
+    ordered.map((s,i)=>
+      `${i+1}. ${s.title} - ${s.artist} (${s.duration})`
+    ).join('\n') +
+
+    '\n\nDurata: ' + formatTime(totalDuration(ordered)) +
+
+    '\n\nGenerated with SETFLOW' +
+    '\nCreated by Arturo De Rosa';
+
+  try {
+
+    await navigator.clipboard.writeText(text);
+
+    alert('Scaletta copiata!');
+
+  } catch(e) {
+
+    prompt('Copia la scaletta:',text);
+  }
+}
+
+$('showName').addEventListener('input',()=>{
+
+  renderSetlist();
+  save();
+});
+
+$('style').addEventListener('change',()=>{
+
+  ordered = [];
+
+  renderSetlist();
+
+  $('message').textContent = 'Genera la nuova scaletta.';
+
+  save();
+});
+
+restore();
+renderLibrary();
+renderSetlist();
+
+</script>
+
+</body>
+</html>
